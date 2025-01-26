@@ -1,0 +1,11 @@
+sui start
+
+sui client publish --gas-budget 100000000
+
+sui client tx-block 2as1dufgTwWLQAfKrogDbi6HyYFpD1NJQqiKCr3dxWQi --json | jq -r '
+  {
+    TreasuryCap: (.objectChanges[] | select(.objectType? | strings | startswith("0x2::coin::TreasuryCap<")) | { objectType, objectId, version, digest }),
+    PublishedPackage: (.objectChanges[] | select(.type == "published") | { packageId, version, digest, modules })
+  }
+'
+
